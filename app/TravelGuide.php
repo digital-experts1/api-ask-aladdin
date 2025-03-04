@@ -14,7 +14,7 @@ class TravelGuide extends Model
 {
 //    use HasTranslations;
       use IsTranslatable;
-    use HasFlexible;
+    // use HasFlexible;
     public $table = "travel_guide";
     public $translatable = ['name','slug','description','overview','thumb_alt','alt','seo_title','seo_keywords',
         'seo_robots','seo_description','facebook_description','related_travel_guides',

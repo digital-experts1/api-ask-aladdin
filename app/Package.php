@@ -16,7 +16,7 @@ class Package extends Model
     public $table = "packages";
 //    use HasTranslations;
      use IsTranslatable;
-    use HasFlexible;
+    // use HasFlexible;
     public function getFlexibleContentAttribute()
     {
         return $this->flexible('flexible-content', [

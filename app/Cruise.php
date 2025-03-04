@@ -11,7 +11,7 @@ class Cruise extends Model
 {
     public $table = "cruises";
     use HasTranslations;
-    use HasFlexible;
+    // use HasFlexible;
 
 /*we use this if we have some inputs saved as array*/
     protected $casts = [

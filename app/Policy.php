@@ -12,7 +12,7 @@ class Policy extends Model
     public $table = "policies";
 //    use HasTranslations;
      use IsTranslatable;
-    use HasFlexible;
+    // use HasFlexible;
     public $translatable = [
         'price_policy',
         'payment_policy', 'repeated_travellers', 'travel_schedule'
