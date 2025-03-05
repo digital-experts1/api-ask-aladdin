@@ -70,6 +70,7 @@ Route::prefix('destination')->group(function () {
     Route::get('travel-guides/{dest_id}/{lang}', [DestinationApiController::class, 'getSingleDestinationTravelGuides']);
 });
 
+Route::get('travel-guide/{dest_id}/{id}/{lang}', [TravelGuideApiController::class, 'getSingleTravelGuide']);
 Route::get('city/excursion/{city_id}/{lang}', [CityExcursionController::class, 'excursionCities']);
 
 /* Blog APIs */

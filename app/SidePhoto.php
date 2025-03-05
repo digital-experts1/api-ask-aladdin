@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
-class SidePhoto extends Model implements Sortable
+class SidePhoto extends Model //implements Sortable
 {
     public $table = "side_photos";
     // protected static function boot()
@@ -17,7 +17,7 @@ class SidePhoto extends Model implements Sortable
 
     //     static::observe(SidePhotoObserver::class);
     // }
-    use SortableTrait;
+    // use SortableTrait;
 
     public $sortable = [
         'order_column_name' => 'sort_order',
