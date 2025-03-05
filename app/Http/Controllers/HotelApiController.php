@@ -28,27 +28,27 @@ class HotelApiController extends Controller
             return $el->id == $id || $el->slug === $id;
         });
 
-        $gallery=array();
-//            dd($item->gallery);
-            if (is_array($val->_gallery)) {
-             
-                foreach ($val->_gallery as $key) {
-                    if (array_key_exists('gallery',$key['attributes'])){
-                        $image = asset('photos/'.$key['attributes']['gallery']);
-                    }else{
-                        $image = [];
-                    }
-                    if (array_key_exists('alt',$key['attributes'])){
-                        $alt = $key['attributes']['alt'];
-                    }else{
-                        $alt = [];
-                    }
-                    $gallery[]=[
-                        'alt'=>$alt,
-                        'image'=>$image,
-                    ];
+        $gallery = array();
+        //            dd($item->gallery);
+        if (is_array($val->_gallery)) {
+
+            foreach ($val->_gallery as $key) {
+                if (array_key_exists('gallery', $key['attributes'])) {
+                    $image = asset('photos/' . $key['attributes']['gallery']);
+                } else {
+                    $image = [];
                 }
+                if (array_key_exists('alt', $key['attributes'])) {
+                    $alt = $key['attributes']['alt'];
+                } else {
+                    $alt = [];
+                }
+                $gallery[] = [
+                    'alt' => $alt,
+                    'image' => $image,
+                ];
             }
+        }
 
 
         $data[] =  [
@@ -62,7 +62,7 @@ class HotelApiController extends Controller
             'slug' => $val->slug,
             'description' => $val->description,
             'thumb_alt' => $val->thumb_alt,
-            'thumb' => asset('photos/' . $val->_thumb),//API::getFiles($val->thumb),
+            'thumb' => asset('photos/' . $val->_thumb), //API::getFiles($val->thumb),
             'rate' => $val->rate,
             'overview' => $val->overview,
             'country' => $val->country,
@@ -74,8 +74,8 @@ class HotelApiController extends Controller
             'amenities' => $val->amenity_list,
             'location_map' => $val->location,
             // 'logo' => API::getFiles($val->logo),
-            'banner' =>asset('photos/' . $val->_banner), //API::getFiles($val->banner),
-            'gallery' => $gallery,//API::getFiles($val->gallery, $imgSize = null, $object = true),
+            'banner' => asset('photos/' . $val->_banner), //API::getFiles($val->banner),
+            'gallery' => $gallery, //API::getFiles($val->gallery, $imgSize = null, $object = true),
             'start_price' => $val->start_price ?? "",
             'free_barking' => $val->free_parking,
             'free_wifi' => $val->free_wifi,
@@ -95,10 +95,10 @@ class HotelApiController extends Controller
                 'twitter_title' => $val->twitter_title,
                 'twitter_description' => $val->twitter_description,
                 'facebook_title' => $val->og_title,
-                'schema'=>$val->seo_schema,
-                'twitter_image' =>asset('photos/' . $val->_twitter_image), //API::getFiles($val->twitter_image),
-                'facebook_image' =>asset('photos/' . $val->_facebook_image) //API::getFiles($val->facebook_image),
-                
+                'schema' => $val->seo_schema,
+                'twitter_image' => asset('photos/' . $val->_twitter_image), //API::getFiles($val->twitter_image),
+                'facebook_image' => asset('photos/' . $val->_facebook_image) //API::getFiles($val->facebook_image),
+
             ]
         ];
 
@@ -149,7 +149,7 @@ class HotelApiController extends Controller
             ];
         });
 
-        $deluxe_hotels = Hotel::with('destination') 
+        $deluxe_hotels = Hotel::with('destination')
             ->whereHas('destination', function ($query) use ($dest_id) {
                 return $query->where('id', $dest_id)->orWhere('slug->en', $dest_id)->where('status', 1);
             })->where('hotel_category', 3)->where('status', 1)->get();
@@ -198,6 +198,46 @@ class HotelApiController extends Controller
         ]);
     }
 
+    // public function getHotelsCities($country_id)
+    // {
+    //     $query = City::select(
+    //         'cities.id',
+    //         'cities.name as city_name',
+    //         'cities.slug as city_slug',
+    //         'cities._thumb as city_thumb',
+    //         'cities.thumb_alt as city_thumb_alt',
+    //         'destinations.name as destination_name',
+    //         'destinations.slug as destination_slug',
+    //     );
+    //     $query->leftJoin('hotels', 'hotels.city_id', '=', 'cities.id');
+    //     $query->leftJoin('destinations', 'hotels.destination_id', '=', 'destinations.id');
+    //     if (is_numeric($country_id)) {
+    //         $query->where('hotels.destination_id', $country_id);
+    //     } else {
+    //         $query->whereRaw("(destinations.slug like '%" . $country_id . "%')");
+    //     }
+    //     $query->groupBy('id');
+    //     $query = $query->get();
+
+    //     $cities = $query->map(function ($value) {
+    //         return [
+    //             'destination'=>[
+    //                 'name' => $value->destination_name,
+    //                 'slug' => $value->destination_slug,
+    //             ],
+    //             'id' => $value->id,
+    //             'name' => $value->city_name,
+    //             'slug' => $value->city_slug,
+    //             'thumb' =>asset('photos/' . $value->city_thumb),
+    //             'thumb_alt' => $value->city_thumb_alt,
+    //         ];
+    //     });
+    //     return response()->json([
+    //         'data' => [
+    //             'cities' => $cities,
+    //         ]
+    //     ], '200');
+    // }
     public function getHotelsCities($country_id)
     {
         $query = City::select(
@@ -207,41 +247,56 @@ class HotelApiController extends Controller
             'cities._thumb as city_thumb',
             'cities.thumb_alt as city_thumb_alt',
             'destinations.name as destination_name',
-            'destinations.slug as destination_slug',
+            'destinations.slug as destination_slug'
         );
+
         $query->leftJoin('hotels', 'hotels.city_id', '=', 'cities.id');
         $query->leftJoin('destinations', 'hotels.destination_id', '=', 'destinations.id');
+
         if (is_numeric($country_id)) {
             $query->where('hotels.destination_id', $country_id);
         } else {
-            $query->whereRaw("(destinations.slug like '%" . $country_id . "%')");
+            $query->whereRaw("destinations.slug LIKE ?", ['%' . $country_id . '%']);
         }
-        $query->groupBy('id');
+
+        // Fix: Include all selected columns in the GROUP BY clause
+        $query->groupBy(
+            'cities.id',
+            'cities.name',
+            'cities.slug',
+            'cities._thumb',
+            'cities.thumb_alt',
+            'destinations.name',
+            'destinations.slug'
+        );
+
         $query = $query->get();
-      
+
         $cities = $query->map(function ($value) {
             return [
-                'destination'=>[
+                'destination' => [
                     'name' => $value->destination_name,
                     'slug' => $value->destination_slug,
                 ],
                 'id' => $value->id,
                 'name' => $value->city_name,
                 'slug' => $value->city_slug,
-                'thumb' =>asset('photos/' . $value->city_thumb),
+                'thumb' => asset('photos/' . $value->city_thumb),
                 'thumb_alt' => $value->city_thumb_alt,
             ];
         });
+
         return response()->json([
             'data' => [
                 'cities' => $cities,
             ]
-        ], '200');
+        ], 200);
     }
+
 
     public function getHotelList($dest_id, $city_id)
     {
-        $standard_hotels = Hotel::with('destination','city')
+        $standard_hotels = Hotel::with('destination', 'city')
             ->whereHas('destination', function ($query) use ($dest_id) {
                 return $query->where('id', $dest_id)->orWhere('slug->en', $dest_id)->where('status', 1);
             })->whereHas('city', function ($query) use ($city_id) {
@@ -270,42 +325,42 @@ class HotelApiController extends Controller
             ];
         });
 
-        $destination=  $standard_hotels->map(function ($val) {
+        $destination =  $standard_hotels->map(function ($val) {
             return [
-                
-                    'name' => $val->destination->name ?? [],
-                    'slug' => $val->destination->slug ?? []
-              
+
+                'name' => $val->destination->name ?? [],
+                'slug' => $val->destination->slug ?? []
+
             ];
         })->unique();
 
         $city =  $standard_hotels->map(function ($val) {
             return [
-                
-                
-                    'name' => $val->city->name ?? [],
-                    'slug' => $val->city->slug ?? [],
-                    'description' => $val->city->hotel_description ?? [],
-                    'banner' => API::getFiles($val->city->banner),
-                    'alt' => $val->city->alt,
-              
+
+
+                'name' => $val->city->name ?? [],
+                'slug' => $val->city->slug ?? [],
+                'description' => $val->city->hotel_description ?? [],
+                'banner' => API::getFiles($val->city->banner),
+                'alt' => $val->city->alt,
+
             ];
         })->unique();
 
         $seo =  $standard_hotels->map(function ($val) {
             return [
-           
-                    'title' => $val->city->hotel_seo_title,
-                    'keywords' => $val->city->hotel_seo_keywords,
-                    'robots' => $val->city->hotel_seo_robots,
-                    'description' => $val->city->hotel_seo_description,
-                    'facebook_description' => $val->city->hotel_facebook_description,
-                    'twitter_title' => $val->city->hotel_twitter_title,
-                    'twitter_description' => $val->city->hotel_twitter_description,
-                    'facebook_title'=>$val->city->hotel_og_title,
-                    'twitter_image'=>API::getFiles($val->city->hotel_twitter_image),
-                    'facebook_image'=>API::getFiles($val->city->hotel_facebook_image),
-            
+
+                'title' => $val->city->hotel_seo_title,
+                'keywords' => $val->city->hotel_seo_keywords,
+                'robots' => $val->city->hotel_seo_robots,
+                'description' => $val->city->hotel_seo_description,
+                'facebook_description' => $val->city->hotel_facebook_description,
+                'twitter_title' => $val->city->hotel_twitter_title,
+                'twitter_description' => $val->city->hotel_twitter_description,
+                'facebook_title' => $val->city->hotel_og_title,
+                'twitter_image' => API::getFiles($val->city->hotel_twitter_image),
+                'facebook_image' => API::getFiles($val->city->hotel_facebook_image),
+
 
             ];
         })->unique();
@@ -383,7 +438,7 @@ class HotelApiController extends Controller
         //         'rate' => $val->rate
         //     ];
         // });
-       
+
         return response()->json([
             'data' => [
                 'paginator' => [
@@ -433,7 +488,4 @@ class HotelApiController extends Controller
             'data' => $query->get()
         ]);
     }
-
-
-
 }
