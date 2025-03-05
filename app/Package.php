@@ -281,7 +281,8 @@ class Package extends Model
                 $reviews[] = [
                     'name' => $row['attributes']['name'],
                     'date' => $row['attributes']['date'],
-                    'image' => API::getFiles( $row['attributes']['image'], $imgSize = null, $object = false),
+                    // 'image' => API::getFiles( $row['attributes']['image'], $imgSize = null, $object = false),
+                    'image' => asset('photos/' . $row['attributes']['image']),
                     //                    'country' => $row['attributes']['country'],
                     'rate' => $row['attributes']['rate'],
                     'review' => $row['attributes']['review'],
