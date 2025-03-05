@@ -131,9 +131,9 @@ Route::get('hot-offer/{dest_id}/{lang}', [CategoryApiController::class, 'destina
 Route::prefix('categories')->group(function () {
     Route::get('{dest_id}/{lang}', [CategoryApiController::class, 'getSingleDestinationCategories']);
 
-    Route::get('{dist_id}/single_category/{id}/{lang}', [CategoryApiController::class, 'singleDestinatopnCategory']);
+    // Route::get('{dist_id}/single_category/{id}/{lang}', [CategoryApiController::class, 'singleDestinatopnCategory']);
 });
-
+Route::get('/{dist_id}/single_category/{id}/{lang}', [CategoryApiController::class, 'singleDestinatopnCategory']);
 /* Global SEO */
 Route::get('global-seo/{lang}', [GlobalSeoApiController::class, 'getGlobaleSeo']);
 
