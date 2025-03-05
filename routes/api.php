@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PackageApiController;
@@ -56,7 +57,7 @@ Route::get('sunmarine', [SliderApiController::class, 'sunmarine']);
 /* Destinations */
 Route::get('destinations/{lang}', [DestinationApiController::class, 'getDestinations']);
 Route::prefix('destination')->group(function () {
-    
+
     Route::get('{id}/{lang}', [DestinationApiController::class, 'getSingleDestinations']);
     Route::get('packages/{id}/{lang}', [DestinationApiController::class, 'getSingleDestinationPackages']);
     Route::get('packages/{id}/{cat_id}/{lang}', [DestinationApiController::class, 'getSingleDestinationPackagesWhereCategory']);
@@ -125,7 +126,7 @@ Route::get('hotels/filter/{lang}', [HotelApiController::class, 'filter']);
 Route::get('hot-offer/{dest_id}/{lang}', [CategoryApiController::class, 'destinationHotOffer']);
 Route::prefix('categories')->group(function () {
     Route::get('{dest_id}/{lang}', [CategoryApiController::class, 'getSingleDestinationCategories']);
-   
+
     Route::get('{dist_id}/single_category/{id}/{lang}', [CategoryApiController::class, 'singleDestinatopnCategory']);
 });
 
@@ -150,15 +151,16 @@ Route::get('lang-control', [MainApiController::class, 'getLangControl']);
 Route::get('menus/{lang}', [MenuApiController::class, 'getAllMenus']);
 
 /* Filters */
-Route::prefix('filter')->group(function () {
-    Route::get('package/{dest_id}/{min_price}/{max_price}/{min_days}/{max_days}/{min_rate}/{max_rate}/{lang}', [FilterApiController::class, 'packageFilter']);
-    Route::get('excursion/{dest_id}/{min_price}/{max_price}/{min_days}/{max_days}/{min_rate}/{max_rate}/{city_id}/{lang}', [FilterApiController::class, 'excursionFilter']);
-    Route::get('cruise/{dest_id}/{min_price}/{max_price}/{min_days}/{max_days}/{min_rate}/{max_rate}/{lang}', [FilterApiController::class, 'cruiseFilter']);
-});
+
+Route::get('filter-package/{dest_id}/{min_price}/{max_price}/{min_days}/{max_days}/{min_rate}/{max_rate}/{lang}', [FilterApiController::class, 'packageFilter']);
+Route::get('filter-excursion/{dest_id}/{min_price}/{max_price}/{min_days}/{max_days}/{min_rate}/{max_rate}/{city_id}/{lang}', [FilterApiController::class, 'excursionFilter']);
+Route::get('filter-cruise/{dest_id}/{min_price}/{max_price}/{min_days}/{max_days}/{min_rate}/{max_rate}/{lang}', [FilterApiController::class, 'cruiseFilter']);
+
 
 /* Trip Dossier */
 Route::post('download/package/{id}/tripdossier', [PackageTripdossierApiController::class, 'storePackageTripdossier']);
 Route::post('email-subscription', [MainApiController::class, 'insertEmail']);
+
 
 
 
@@ -365,4 +367,3 @@ Route::post('email-subscription', [MainApiController::class, 'insertEmail']);
 // Route::get('/email', 'PackageTripdossierApiController@EmailPackageTripdossier');
 // Route::get('/tour-types/{dest_id}/{lang}', 'TourtypeApiController@tourTypeslist');
 // Route::get('/single-tour-type/{dest_id}/{id}/{lang}', 'TourtypeApiController@getSingleTourType');
-
