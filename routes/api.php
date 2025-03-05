@@ -163,7 +163,7 @@ Route::get('filter-cruise/{dest_id}/{min_price}/{max_price}/{min_days}/{max_days
 /* Trip Dossier */
 Route::post('download/package/{id}/tripdossier', [PackageTripdossierApiController::class, 'storePackageTripdossier']);
 Route::post('email-subscription', [MainApiController::class, 'insertEmail']);
-Route::post('tour-types/{dest_id}/{lang}', [TourtypeApiController::class, 'tourTypeslist']);
+Route::get('tour-types/{dest_id}/{lang}', [TourtypeApiController::class, 'tourTypeslist']);
 Route::post('single-tour-type/{dest_id}/{id}/{lang}', [TourtypeApiController::class, 'getSingleTourType']);
 Route::post('email', [PackageTripdossierApiController::class, 'EmailPackageTripdossier']);
 // Route::get('/email', 'PackageTripdossierApiController@EmailPackageTripdossier');
