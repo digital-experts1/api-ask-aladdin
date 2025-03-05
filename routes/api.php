@@ -122,9 +122,10 @@ Route::prefix('hotel')->group(function () {
 Route::get('hotels/filter/{lang}', [HotelApiController::class, 'filter']);
 
 /* Categories */
+Route::get('hot-offer/{dest_id}/{lang}', [CategoryApiController::class, 'destinationHotOffer']);
 Route::prefix('categories')->group(function () {
     Route::get('{dest_id}/{lang}', [CategoryApiController::class, 'getSingleDestinationCategories']);
-    Route::get('hot-offer/{dest_id}/{lang}', [CategoryApiController::class, 'destinationHotOffer']);
+   
     Route::get('{dist_id}/single_category/{id}/{lang}', [CategoryApiController::class, 'singleDestinatopnCategory']);
 });
 
