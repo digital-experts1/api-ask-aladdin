@@ -38,9 +38,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 /* Packages */
-Route::prefix('package')->group(function () {
-    Route::get('{dest_id}/{id}/{lang}', [PackageApiController::class, 'gitSinglePackage']);
-});
+
+Route::get('package/{dest_id}/{id}/{lang}', [PackageApiController::class, 'gitSinglePackage']);
+
+// Route::get('package/{dest_id}/{id}/{lang}', 'PackageApiController@gitSinglePackage');
 
 Route::prefix('packages')->group(function () {
     Route::get('{lang}', [PackageApiController::class, 'getAllPackages']);
@@ -93,16 +94,16 @@ Route::prefix('excursion')->group(function () {
 });
 
 /* Cruises */
-Route::prefix('cruises')->group(function () {
-    Route::get('{lang}', [CruiseApiController::class, 'getAllCruises']);
-    Route::get('{dest_id}/{id}/{lang}', [CruiseApiController::class, 'getSingleCruise']);
-});
+
+Route::get('cruises/{lang}', [CruiseApiController::class, 'getAllCruises']);
+Route::get('cruise/{dest_id}/{id}/{lang}', [CruiseApiController::class, 'getSingleCruise']);
+
 
 /* Guides */
-Route::prefix('guides')->group(function () {
-    Route::get('{lang}', [GuideApiController::class, 'getAllGuides']);
-    Route::get('{id}/{lang}', [GuideApiController::class, 'getSingleGuides']);
-});
+
+Route::get('guides/{lang}', [GuideApiController::class, 'getAllGuides']);
+Route::get('guide/{id}/{lang}', [GuideApiController::class, 'getSingleGuides']);
+
 
 /* Pages */
 Route::prefix('page')->group(function () {
@@ -113,12 +114,14 @@ Route::get('{cat_id}/pages/{lang}', [PageApiController::class, 'getCategoryWithP
 Route::get('{dist_id}/{cat_id}/pages/{lang}', [PageApiController::class, 'getCategoryWithPagesv']);
 
 /* Hotels */
-Route::prefix('hotel')->group(function () {
-    Route::get('{dest_id}/{id}/{lang}', [HotelApiController::class, 'getSingleHotel']);
-    Route::get('hotels/{dest_id}/{lang}', [HotelApiController::class, 'getDestinationHotels']);
-    Route::get('hotels-cities/{country_id}/{lang}', [HotelApiController::class, 'getHotelsCities']);
-    Route::get('hotels-list/{dest_id}/{city_id}/{lang}', [HotelApiController::class, 'getHotelList']);
-});
+
+Route::get('hotel/{dest_id}/{id}/{lang}', [HotelApiController::class, 'getSingleHotel']);
+Route::get('hotels/{dest_id}/{lang}', [HotelApiController::class, 'getDestinationHotels']);
+Route::get('hotels-cities/{country_id}/{lang}', [HotelApiController::class, 'getHotelsCities']);
+Route::get('hotels-list/{dest_id}/{city_id}/{lang}', [HotelApiController::class, 'getHotelList']);
+
+
+
 
 Route::get('hotels/filter/{lang}', [HotelApiController::class, 'filter']);
 
