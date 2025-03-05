@@ -54,8 +54,9 @@ Route::prefix('sliders')->group(function () {
 Route::get('sunmarine', [SliderApiController::class, 'sunmarine']);
 
 /* Destinations */
-Route::prefix('destinations')->group(function () {
-    Route::get('{lang}', [DestinationApiController::class, 'getDestinations']);
+Route::get('destinations/{lang}', [DestinationApiController::class, 'getDestinations']);
+Route::prefix('destination')->group(function () {
+    
     Route::get('{id}/{lang}', [DestinationApiController::class, 'getSingleDestinations']);
     Route::get('packages/{id}/{lang}', [DestinationApiController::class, 'getSingleDestinationPackages']);
     Route::get('packages/{id}/{cat_id}/{lang}', [DestinationApiController::class, 'getSingleDestinationPackagesWhereCategory']);
