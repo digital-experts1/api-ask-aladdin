@@ -41,7 +41,7 @@ class TravelGuideApiController extends Controller
             'banner_alt' => $value->alt,
             'banner' => asset('photos/' . $value->_banner),//API::getFiles($value->banner),//
             // 'gallery' => API::getFiles($value->gallery_list,$imgSize = null, $object = true)?? [],
-            'image_over_banner' => API::getFiles($value->image_over_banner),
+            'image_over_banner' => asset('photos/' . $value->image_over_banner),
             'related_travel_guides' => $value->related_travel_guide_list ?? [],
             'related_pages' => $value->related_pages_list ?? [],
             'related_packages' => $value->related_packages_list ?? [],
