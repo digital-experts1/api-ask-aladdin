@@ -53,12 +53,12 @@ class CityController extends Controller
     {  
         $query = City::select(
             'cities.id',
-            DB::raw('ANY_VALUE(cities.name) as city_name'),
-            DB::raw('ANY_VALUE(cities.slug) as city_slug'),
-            DB::raw('ANY_VALUE(cities._thumb) as city_thumb'),
-            DB::raw('ANY_VALUE(cities.thumb_alt) as city_thumb_alt'),
-            DB::raw('ANY_VALUE(destinations.name) as destination_name'),
-            DB::raw('ANY_VALUE(destinations.slug) as destination_slug')
+            'cities.name as city_name',
+            'cities.slug as city_slug',
+            'cities._thumb as city_thumb',
+            'cities.thumb_alt as city_thumb_alt',
+            'destinations.name as destination_name',
+            'destinations.slug as destination_slug'
         );
 
         $query->leftJoin('excursions', 'excursions.city_id', '=', 'cities.id');
@@ -70,7 +70,17 @@ class CityController extends Controller
             $query->whereRaw("destinations.slug LIKE ?", ['%' . $dest_id . '%']);
         }
 
-        $query->groupBy('cities.id');
+        // Group by all selected fields to prevent SQL error
+        $query->groupBy(
+            'cities.id',
+            'cities.name',
+            'cities.slug',
+            'cities._thumb',
+            'cities.thumb_alt',
+            'destinations.name',
+            'destinations.slug'
+        );
+
         $cities = $query->get()->map(function ($value) {
             return [
                 'destination' => [
