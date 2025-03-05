@@ -341,7 +341,7 @@ class HotelApiController extends Controller
                 'name' => $val->city->name ?? [],
                 'slug' => $val->city->slug ?? [],
                 'description' => $val->city->hotel_description ?? [],
-                'banner' => API::getFiles($val->city->banner),
+                'banner' =>  asset('photos/' . $val->city->banner),
                 'alt' => $val->city->alt,
 
             ];
@@ -358,8 +358,8 @@ class HotelApiController extends Controller
                 'twitter_title' => $val->city->hotel_twitter_title,
                 'twitter_description' => $val->city->hotel_twitter_description,
                 'facebook_title' => $val->city->hotel_og_title,
-                'twitter_image' => API::getFiles($val->city->hotel_twitter_image),
-                'facebook_image' => API::getFiles($val->city->hotel_facebook_image),
+                'twitter_image' => asset('photos/' . $val->city->hotel_twitter_image),
+                'facebook_image' =>asset('photos/' . $val->city->hotel_facebook_image),
 
 
             ];
